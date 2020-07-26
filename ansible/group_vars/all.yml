@@ -1,0 +1,5 @@
+jenkins:
+  domain: jenkins.aws.donkeysharp.xyz
+
+certbot:
+  email: "serguimant@gmail.com"

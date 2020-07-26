@@ -1,0 +1,7 @@
+---
+- hosts: jenkins_servers
+  become: True
+  roles:
+    - { role: base }
+    - { role: certbot }
+    - { role: jenkins }

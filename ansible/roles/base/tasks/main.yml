@@ -1,0 +1,24 @@
+---
+- block:
+  - name: Update repository list
+    apt:
+      update_cache: yes
+
+  - name: Install base dependencies
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+    - jq
+    - python3-pip
+    - openjdk-8-jdk
+    - apt-transport-https
+    - software-properties-common
+    - curl
+    - man
+    - ca-certificates
+    - gnupg2
+    - build-essential
+    - git
+    - vim
+    - tmux

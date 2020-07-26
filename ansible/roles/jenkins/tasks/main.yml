@@ -1,0 +1,32 @@
+---
+- block:
+  - name: Add Jenkins key
+    apt_key:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+      state: present
+
+  - name: Add Jenkins repository
+    apt_repository:
+      repo: deb https://pkg.jenkins.io/debian-stable binary/
+      state: present
+      filename: jenkins
+
+  - name: Install Jenkins plus dependencies
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    loop:
+    - jenkins
+    - nginx
+
+  - name: Copy Jenkins Nginx configuration
+    template:
+      src: templates/nginx-jenkins.conf
+      dest: /etc/nginx/sites-enabled/nginx-jenkins.conf
+      mode: 0644
+
+  - name: restart nginx
+    systemd:
+      name: nginx
+      state: restarted

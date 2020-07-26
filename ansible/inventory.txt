@@ -1,0 +1,11 @@
+[jenkins_servers]
+jenkins.aws.donkeysharp.xyz ansible_user=ubuntu
+
+[jenkins_servers:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[app_servers]
+app.aws.donkeysharp.xyz ansible_user=ubuntu
+
+[app_servers:vars]
+ansible_python_interpreter=/usr/bin/python3
