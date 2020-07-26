@@ -6,7 +6,6 @@ variable "instance_type" {
 
 variable "key_name" {
   type = string
-  default = "iac-example"
   description = "Key pair used for ec2 instances"
 }
 
