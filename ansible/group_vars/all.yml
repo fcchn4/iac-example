@@ -3,3 +3,7 @@ jenkins:
 
 certbot:
   email: "serguimant@gmail.com"
+
+juice_shop:
+  image: donkeysharp/juice-shop
+  tag: latest

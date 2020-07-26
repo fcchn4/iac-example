@@ -1,0 +1,7 @@
+---
+- hosts: app_servers
+  become: True
+  roles:
+    - { role: base }
+    - { role: docker }
+    - { role: juice-shop }

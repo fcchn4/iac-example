@@ -1,0 +1,20 @@
+---
+- block:
+  - name: Create Juice Shop directory
+    file:
+      state: directory
+      dest: /opt/juice-shop
+
+  - name: Copy docker compose file
+    template:
+      src: templates/docker-compose.yml
+      dest: /opt/juice-shop/docker-compose.yml
+      mode: 0644
+
+  - name:
+    shell: |
+      docker pull "{{ juice_shop.image }}:{{ juice_shop.tag }}"
+      docker-compose up -d
+    args:
+      chdir: /opt/juice-shop
+    when: deploy_action == "deploy"
