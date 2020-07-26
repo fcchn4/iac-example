@@ -1,0 +1,41 @@
+- block:
+  - name: Add Docker CE apt key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Add Docker CE repository
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+      filename: docker-ce
+
+  - name: Update repositories
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+
+  - name: Install Docker CE
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+  - name: Add ansible user to docker group
+    user:
+      name: "{{ ansible_user }}"
+      append: yes
+      groups: docker
+
+  - name: Download docker-compose
+    get_url:
+      url: https://github.com/docker/compose/releases/download/1.26.2/docker-compose-linux-x86_64
+      dest: /usr/bin/docker-compose
+      mode: 0755
+
+  - name: Add bash autocompletion
+    get_url:
+      url: https://raw.githubusercontent.com/docker/compose/1.26.2/contrib/completion/bash/docker-compose
+      dest: /etc/bash_completion.d/docker-compose
