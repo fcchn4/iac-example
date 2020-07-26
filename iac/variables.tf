@@ -1,6 +1,12 @@
-variable "instance_type" {
+variable "app_instance_type" {
   type = string
   default = "t2.micro"
+  description = "Instance type"
+}
+
+variable "jenkins_instance_type" {
+  type = string
+  default = "t2.medium"
   description = "Instance type"
 }
 

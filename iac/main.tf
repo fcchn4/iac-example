@@ -43,7 +43,7 @@ resource "aws_security_group" "instance_sg" {
 
 resource "aws_instance" "jenkins" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
+  instance_type = var.jenkins_instance_type
   vpc_security_group_ids = [aws_security_group.instance_sg.id]
   iam_instance_profile = aws_iam_instance_profile.jenkins_profile.name
   key_name        = var.key_name
@@ -53,9 +53,14 @@ resource "aws_instance" "jenkins" {
   },)
 }
 
+resource "aws_eip" "jenkins_eip" {
+  vpc = true
+  instance = aws_instance.jenkins.id
+}
+
 resource "aws_instance" "application" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
+  instance_type = var.app_instance_type
   vpc_security_group_ids = [aws_security_group.instance_sg.id]
   key_name        = var.key_name
 
@@ -64,12 +69,17 @@ resource "aws_instance" "application" {
   },)
 }
 
+resource "aws_eip" "application_eip" {
+  vpc = true
+  instance = aws_instance.application.id
+}
+
 resource "aws_route53_record" "jenkins_dns" {
   zone_id = var.zone_id
   name    = "jenkins.${var.domain}"
   type    = "A"
   ttl     = "300"
-  records = [aws_instance.jenkins.public_ip]
+  records = [aws_eip.jenkins_eip.public_ip]
 }
 
 resource "aws_route53_record" "app_dns" {
@@ -77,5 +87,5 @@ resource "aws_route53_record" "app_dns" {
   name    = "app.${var.domain}"
   type    = "A"
   ttl     = "300"
-  records = [aws_instance.application.public_ip]
+  records = [aws_eip.application_eip.public_ip]
 }
