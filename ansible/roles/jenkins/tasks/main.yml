@@ -11,14 +11,21 @@
       state: present
       filename: jenkins
 
-  - name: Install Jenkins plus dependencies
+  - name: Install Jenkins dependencies
     apt:
       name: "{{ item }}"
       state: present
       update_cache: yes
     loop:
-    - jenkins
+    - openjdk-8-jdk
     - nginx
+
+  - name: Install Jenkins
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+    - jenkins
 
   - name: Copy Jenkins Nginx configuration
     template:
@@ -30,3 +37,9 @@
     systemd:
       name: nginx
       state: restarted
+
+  - name: Add jenkins user to docker group
+    user:
+      name: "jenkins"
+      append: yes
+      groups: docker
