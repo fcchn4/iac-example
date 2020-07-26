@@ -4,4 +4,5 @@
   roles:
     - { role: base }
     - { role: certbot }
+    - { role: docker }
     - { role: jenkins }
