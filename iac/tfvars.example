@@ -1,0 +1,2 @@
+export TF_VAR_zone_id=some-zone-id
+export TF_VAR_domain=example.com
