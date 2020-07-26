@@ -1,0 +1,19 @@
+---
+- block:
+  - name: Create Owasp Zap directory
+    file:
+      state: directory
+      dest: /opt/zap
+
+  - name: Download Owasp Zap proxy
+    unarchive:
+      src: https://github.com/zaproxy/zaproxy/releases/download/v2.9.0/ZAP_2.9.0_Linux.tar.gz
+      dest: /opt/zap
+      remote_src: yes
+
+  - name: Install Zap Proxy python library
+    pip:
+      name: python-owasp-zap-v2.4
+      executable: pip3
+      state: present
+    become: True

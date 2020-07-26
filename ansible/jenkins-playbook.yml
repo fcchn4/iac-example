@@ -6,3 +6,4 @@
     - { role: certbot }
     - { role: docker }
     - { role: jenkins }
+    - { role: owasp-zap }
