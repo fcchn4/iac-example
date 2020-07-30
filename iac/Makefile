@@ -13,5 +13,6 @@ apply:
 	terraform apply --auto-approve
 
 destroy:
+	[ -f ./tfvars ] && . ./tfvars
 	terraform init
 	terraform destroy
