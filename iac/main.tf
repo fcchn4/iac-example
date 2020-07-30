@@ -41,16 +41,32 @@ resource "aws_security_group" "instance_sg" {
   }
 }
 
+resource "aws_ebs_volume" "jenkins_storage" {
+  availability_zone = var.availability_zone
+  size              = 30
+
+  tags = merge(module.label.tags, {
+    "Name" = "${module.label.id}-jenkins-ebs-vol"
+  },)
+}
+
 resource "aws_instance" "jenkins" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.jenkins_instance_type
   vpc_security_group_ids = [aws_security_group.instance_sg.id]
   iam_instance_profile = aws_iam_instance_profile.jenkins_profile.name
+  availability_zone = var.availability_zone
   key_name        = var.key_name
 
   tags = merge(module.label.tags, {
     "Name" = "${module.label.id}-jenkins-instance"
   },)
+}
+
+resource "aws_volume_attachment" "ebs_att" {
+  device_name = "/dev/xvdb"
+  volume_id   = aws_ebs_volume.jenkins_storage.id
+  instance_id = aws_instance.jenkins.id
 }
 
 resource "aws_eip" "jenkins_eip" {

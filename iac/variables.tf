@@ -15,6 +15,12 @@ variable "key_name" {
   description = "Key pair used for ec2 instances"
 }
 
+variable "availability_zone" {
+  type = string
+  description = "Availability Zone in which instances will be created"
+  default = "us-east-1e"
+}
+
 variable "zone_id" {
   type = string
   description = "Route53 Zone ID"
